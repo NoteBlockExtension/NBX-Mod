@@ -1,8 +1,11 @@
-package com.github.soniex2.nbx.mod.gui;
+package com.github.soniex2.nbx.mod.handler;
 
+import com.github.soniex2.nbx.mod.gui.GuiStudio;
+import com.github.soniex2.nbx.mod.gui.GuiStudioMain;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.client.event.GuiScreenEvent;
 
 import java.util.HashMap;
@@ -15,8 +18,6 @@ import java.util.List;
 public class StudioHandler {
 
     public GuiButton myButton;
-
-    public boolean drawStuff = false;
 
     private HashMap<Integer, Boolean> map;
     private int lastButtonId;
@@ -50,40 +51,30 @@ public class StudioHandler {
 
     @SubscribeEvent
     public void onGuiPostInit(GuiScreenEvent.InitGuiEvent.Post event) {
+        // Don't run for our GUIs
+        if (event.gui instanceof GuiStudio) return;
+
         buttonMap.clear();
         myButton = new GuiButton(getFreeId(event.buttonList), 0, 0, 20, 20, "x");
         event.buttonList.add(myButton);
         buttonMap.put(myButton, myButton.id);
-
-        if (drawStuff) {
-            System.out.println("We're initting");
-            for (Object o : event.buttonList) {
-                GuiButton b = (GuiButton) o;
-                if (!buttonMap.containsKey(b)) {
-                    b.enabled = false; // disable all buttons
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void onGuiPostDraw(GuiScreenEvent.DrawScreenEvent.Post event) {
-        if (drawStuff) {
-            // this is where we draw stuff.
-            // TODO draw black/grey transparent background over GUI
-            event.gui.mc.fontRenderer.drawString("Minecraft NBX Studio Mod is coming!", 64, 64, 0xAA0000, true);
-        }
     }
 
     @SubscribeEvent
     public void onButton(GuiScreenEvent.ActionPerformedEvent.Pre event) {
         if (event.button.equals(myButton)) {
-            drawStuff = !drawStuff;
-            Minecraft.getMinecraft().displayGuiScreen(Minecraft.getMinecraft().currentScreen);
+            // HACK! might have issues with OptiFine!
+            // remove myButton
+            myButton.visible = false;
+            myButton.enabled = false;
+            // store old screen (background)
+            GuiScreen old = Minecraft.getMinecraft().currentScreen;
+            // set current screen to null
+            Minecraft.getMinecraft().currentScreen = null;
+            // start up new screen, bypassing old screen onGuiClosed
+            Minecraft.getMinecraft().displayGuiScreen(new GuiStudioMain(old));
+
             event.setCanceled(true); // avoid mods shouting at us and stuff
-        }
-        if (drawStuff && !buttonMap.containsKey(event.button)) {
-            event.setCanceled(true);
         }
     }
 }
