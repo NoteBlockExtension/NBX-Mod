@@ -1,0 +1,21 @@
+{
+  "modListVersion": 2,
+  "modList": [{
+    "modid": "nbxmod",
+    "name": "NBXMod",
+    "description": "NoteBlockExtension in mod form",
+    "version": "1.0",
+    "mcversion": "1.7.10",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [ "SoniEx2" ],
+    "credits": "SoniEx2",
+    "logoFile": "",
+    "screenshots": [  ],
+    "parent": "",
+    "requiredMods": [ "Forge", "OpenComputers" ],
+    "dependencies": [ "OpenComputers" ],
+    "dependants": [ "" ],
+    "useDependencyInformation": true
+  }]
+}
