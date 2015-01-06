@@ -8,8 +8,8 @@ import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author soniex2
@@ -20,20 +20,17 @@ public class GuiStudioMain extends GuiStudio {
     private StudioHandler handler;
     private boolean handlerOldSkip;
 
-    public List<GuiElementWindow> windowList = new ArrayList<GuiElementWindow>();
+    // this can get slow if the user is crazy and opens more than 100 windows
+    public List<GuiElementWindow> windowList = new CopyOnWriteArrayList<GuiElementWindow>();
 
     private GuiElementWindow selected = null;
 
-    public GuiStudioMain() {
-        windowList.add(selected = new GuiElementStudioWindow());
-    }
-
     public void setSelected(GuiElementWindow selected) {
         // remove the new selection
-        //windowList.remove(selected);
-        //windowList.add(selected);
-        //this.selected = selected;
-        // TODO workaround CoModException
+        windowList.remove(selected);
+        // put it in front
+        windowList.add(selected);
+        this.selected = selected;
     }
 
     public GuiStudioMain(GuiScreen background, StudioHandler handler) {
@@ -41,6 +38,8 @@ public class GuiStudioMain extends GuiStudio {
         this.handler = handler;
         this.handlerOldSkip = handler.skipPostInitCheck;
         handler.skipPostInitCheck = true;
+        // add main window
+        windowList.add(selected = new GuiElementStudioWindow());
     }
 
     @Override
