@@ -3,6 +3,7 @@ package com.github.soniex2.nbx.mod.gui;
 import com.github.soniex2.nbx.mod.handler.StudioHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -77,12 +78,17 @@ public class GuiStudioMain extends GuiStudio {
 
         super.drawScreen(mouseX, mouseY, renderPartialTicks);
 
+        int border = 0x222222;
+        this.drawGradientRect(posX - 1, posY - 1, posX + sizeX + 1, posY + sizeY + 1, 0xFF000000 | border, 0xFF000000 | border);
         int main_window_top = 0xEEFFEE;
         int main_window_bottom = 0xFFEEEE;
         this.drawGradientRect(posX, posY, posX + sizeX, posY + sizeY, 0xFF000000 | main_window_top, 0xFF000000 | main_window_bottom);
-        int tb_top = 0xFFCCCC;
-        int tb_bottom = 0xCCFFCC;
+        int tb_top = 0xFFDDDD;
+        int tb_bottom = 0xDDFFDD;
         this.drawGradientRect(posX, posY, posX + sizeX, posY + titlebar_height, 0xFF000000 | tb_top, 0xFF000000 | tb_bottom);
+
+        // text renders under overlay :(
+        this.drawCenteredString(this.fontRendererObj, "It works! Well kinda...", posX + (sizeX / 2), posY + (sizeY / 2), 0xFFFF0000);
 
         if (this.mc.thePlayer != null && this.mc.thePlayer.openContainer != null) {
             GL11.glEnable(GL11.GL_LIGHTING);
