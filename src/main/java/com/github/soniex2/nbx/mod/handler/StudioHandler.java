@@ -22,6 +22,7 @@ public class StudioHandler {
 
     private HashMap<Integer, Boolean> map;
     private int lastButtonId;
+    private boolean hasButton = false;
 
     private int getFreeId(List buttonList) {
         if (map == null)
@@ -48,17 +49,22 @@ public class StudioHandler {
     @SubscribeEvent
     @SuppressWarnings("unchecked")
     public void onGuiPostInit(GuiScreenEvent.InitGuiEvent.Post event) {
-        if (skipPostInitCheck) return;
+        if (skipPostInitCheck) {
+            hasButton = false;
+            return;
+        }
         // TODO get a different way to trigger our screen
         if (event.gui instanceof GuiScreenRealmsProxy) return;
 
         myButton = new GuiButton(getFreeId(event.buttonList), 0, 0, 20, 20, "x");
         event.buttonList.add(myButton);
+        hasButton = true;
     }
 
     @SubscribeEvent
     public void onButton(GuiScreenEvent.ActionPerformedEvent.Pre event) {
-        if (event.button.equals(myButton)) {
+        // TODO fixme
+        if (hasButton && event.button.id == myButton.id) {
             // HACK! might have issues with OptiFine!
             // remove myButton
             myButton.visible = false;
