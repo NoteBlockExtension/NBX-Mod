@@ -151,6 +151,10 @@ public class GuiStudioMain extends GuiStudio {
 
     @Override
     protected void keyTyped(char character, int keycode) {
+        for (GuiElementWindow w : windowList) {
+            if (w.keyTyped(character, keycode))
+                return;
+        }
         if (background != null && keycode == 1) {
             exit();
         } else {
@@ -227,4 +231,7 @@ public class GuiStudioMain extends GuiStudio {
         }
     }
 
+    public GuiElementWindow getSelected() {
+        return selected;
+    }
 }

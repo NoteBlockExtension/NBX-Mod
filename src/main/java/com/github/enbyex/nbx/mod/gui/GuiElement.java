@@ -10,6 +10,8 @@ public abstract class GuiElement {
     private int posX = 1;
     private int posY = 1;
 
+    public GuiStudioMain guiStudioMain;
+
     private boolean moving = false;
 
     public void handleMove(int mouseX, int mouseY) {
