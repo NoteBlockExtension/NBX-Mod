@@ -70,19 +70,21 @@ public class GuiStudioMain extends GuiStudio {
         // render ON TOP
         float oldzlevel = this.zLevel;
         this.zLevel = 1000.0F;
-        if (this.mc.thePlayer.openContainer != null) {
+        if (this.mc.thePlayer != null && this.mc.thePlayer.openContainer != null) {
             GL11.glPushMatrix();
             GL11.glDisable(GL11.GL_LIGHTING);
         }
 
         super.drawScreen(mouseX, mouseY, renderPartialTicks);
 
-        int c1 = 0xEEFFEE;
-        int c2 = 0xFFEEEE;
-        this.drawGradientRect(posX, posY, posX + sizeX, posY + sizeY, 0xFF000000 | c1, 0xFF000000 | c2);
-        this.drawGradientRect(posX, posY, posX + sizeX, posY + titlebar_height, 0xFF000000 | c2, 0xFF000000 | c1);
+        int main_window_top = 0xEEFFEE;
+        int main_window_bottom = 0xFFEEEE;
+        this.drawGradientRect(posX, posY, posX + sizeX, posY + sizeY, 0xFF000000 | main_window_top, 0xFF000000 | main_window_bottom);
+        int tb_top = 0xFFCCCC;
+        int tb_bottom = 0xCCFFCC;
+        this.drawGradientRect(posX, posY, posX + sizeX, posY + titlebar_height, 0xFF000000 | tb_top, 0xFF000000 | tb_bottom);
 
-        if (this.mc.thePlayer.openContainer != null) {
+        if (this.mc.thePlayer != null && this.mc.thePlayer.openContainer != null) {
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glPopMatrix();
         }
