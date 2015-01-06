@@ -68,13 +68,12 @@ public class GuiStudioMain extends GuiStudio {
         }
         // end hack
 
-        // render ON TOP
-        float oldzlevel = this.zLevel;
-        this.zLevel = 1000.0F;
+        GL11.glPushMatrix();
         if (this.mc.thePlayer != null && this.mc.thePlayer.openContainer != null) {
-            GL11.glPushMatrix();
             GL11.glDisable(GL11.GL_LIGHTING);
         }
+
+        GL11.glTranslatef(1f, 1f, 1000f);
 
         super.drawScreen(mouseX, mouseY, renderPartialTicks);
 
@@ -92,10 +91,8 @@ public class GuiStudioMain extends GuiStudio {
 
         if (this.mc.thePlayer != null && this.mc.thePlayer.openContainer != null) {
             GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glPopMatrix();
         }
-        // restore zLevel
-        this.zLevel = oldzlevel;
+        GL11.glPopMatrix();
     }
 
     @Override
