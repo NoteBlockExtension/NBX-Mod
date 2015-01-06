@@ -1,11 +1,11 @@
 package com.github.soniex2.nbx.mod.handler;
 
-import com.github.soniex2.nbx.mod.gui.GuiStudio;
 import com.github.soniex2.nbx.mod.gui.GuiStudioMain;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiScreenRealmsProxy;
 import net.minecraftforge.client.event.GuiScreenEvent;
 
 import java.util.HashMap;
@@ -17,15 +17,11 @@ import java.util.List;
  */
 public class StudioHandler {
 
-    public GuiButton myButton;
+    private GuiButton myButton;
+    public boolean skipPostInitCheck;
 
     private HashMap<Integer, Boolean> map;
     private int lastButtonId;
-    private HashMap<GuiButton, Integer> buttonMap;
-
-    public StudioHandler() {
-        buttonMap = new HashMap<GuiButton, Integer>();
-    }
 
     private int getFreeId(List buttonList) {
         if (map == null)
@@ -50,14 +46,14 @@ public class StudioHandler {
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unchecked")
     public void onGuiPostInit(GuiScreenEvent.InitGuiEvent.Post event) {
-        // Don't run for our GUIs
-        if (event.gui instanceof GuiStudio) return;
+        if (skipPostInitCheck) return;
+        // TODO get a different way to trigger our screen
+        if (event.gui instanceof GuiScreenRealmsProxy) return;
 
-        buttonMap.clear();
         myButton = new GuiButton(getFreeId(event.buttonList), 0, 0, 20, 20, "x");
         event.buttonList.add(myButton);
-        buttonMap.put(myButton, myButton.id);
     }
 
     @SubscribeEvent
@@ -72,7 +68,7 @@ public class StudioHandler {
             // set current screen to null
             Minecraft.getMinecraft().currentScreen = null;
             // start up new screen, bypassing old screen onGuiClosed
-            Minecraft.getMinecraft().displayGuiScreen(new GuiStudioMain(old));
+            Minecraft.getMinecraft().displayGuiScreen(new GuiStudioMain(old, this));
 
             event.setCanceled(true); // avoid mods shouting at us and stuff
         }
