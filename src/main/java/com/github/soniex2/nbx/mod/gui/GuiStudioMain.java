@@ -2,10 +2,14 @@ package com.github.soniex2.nbx.mod.gui;
 
 import com.github.soniex2.nbx.mod.handler.StudioHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author soniex2
@@ -16,15 +20,21 @@ public class GuiStudioMain extends GuiStudio {
     private StudioHandler handler;
     private boolean handlerOldSkip;
 
-    private int sizeX = 100;
-    private int sizeY = 100;
-    private int posX = 0;
-    private int posY = 0;
+    public List<GuiElementWindow> windowList = new ArrayList<GuiElementWindow>();
 
-    // should I make this final?
-    private int titlebar_height = 20;
+    private GuiElementWindow selected = null;
 
-    private boolean moving = false;
+    public GuiStudioMain() {
+        windowList.add(selected = new GuiElementStudioWindow());
+    }
+
+    public void setSelected(GuiElementWindow selected) {
+        // remove the new selection
+        //windowList.remove(selected);
+        //windowList.add(selected);
+        //this.selected = selected;
+        // TODO workaround CoModException
+    }
 
     public GuiStudioMain(GuiScreen background, StudioHandler handler) {
         this.background = background;
@@ -39,24 +49,50 @@ public class GuiStudioMain extends GuiStudio {
         int mouseX = Mouse.getEventX() * this.width / this.mc.displayWidth;
         int mouseY = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
 
-        if (moving) {
-            posX = mouseX - (sizeX / 2);
-            posY = mouseY - (titlebar_height / 2);
+//        if (moving) {
+//            posX = mouseX - (sizeX / 2);
+//            posY = mouseY - (titlebar_height / 2);
+//            // TODO better moving system
+//            closeButton.xPosition = posX + sizeX - closeButton.getButtonWidth();
+//            closeButton.yPosition = posY;
+//        }
+        for (GuiElementWindow w : windowList) {
+            w.handleMove(mouseX, mouseY);
+        }
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) {
+//        switch (button.id) {
+//            case 0:
+//                exit();
+//                break;
+//        }
+    }
+
+    private void exit() {
+        handler.skipPostInitCheck = handlerOldSkip;
+        mc.displayGuiScreen(background);
+        if (mc.currentScreen == this) {
+            handler.skipPostInitCheck = true;
         }
     }
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
-        checkMove(mouseX, mouseY, button);
+        for (GuiElementWindow w : windowList) {
+            w.mouseClicked(mouseX, mouseY, button);
+        }
+//        checkMove(mouseX, mouseY, button);
     }
 
-    protected void checkMove(int mouseX, int mouseY, int button) {
-        if (button != 0) return;
-        if (mouseX < posX || mouseX > posX + sizeX) return;
-        if (mouseY < posY || mouseY > posY + titlebar_height) return;
-        moving = !moving;
-    }
+//    protected void checkMove(int mouseX, int mouseY, int button) {
+//        if (button != 0) return;
+//        if (mouseX < posX || mouseX > posX + sizeX) return;
+//        if (mouseY < posY || mouseY > posY + titlebar_height) return;
+//        moving = !moving;
+//    }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float renderPartialTicks) {
@@ -73,21 +109,13 @@ public class GuiStudioMain extends GuiStudio {
             GL11.glDisable(GL11.GL_LIGHTING);
         }
 
-        GL11.glTranslatef(1f, 1f, 1000f);
+        // render ON TOP
+        GL11.glTranslatef(0f, 0f, 1000f);
 
-        super.drawScreen(mouseX, mouseY, renderPartialTicks);
-
-        int border = 0x222222;
-        this.drawGradientRect(posX - 1, posY - 1, posX + sizeX + 1, posY + sizeY + 1, 0xFF000000 | border, 0xFF000000 | border);
-        int main_window_top = 0xEEFFEE;
-        int main_window_bottom = 0xFFEEEE;
-        this.drawGradientRect(posX, posY, posX + sizeX, posY + sizeY, 0xFF000000 | main_window_top, 0xFF000000 | main_window_bottom);
-        int tb_top = 0xFFDDDD;
-        int tb_bottom = 0xDDFFDD;
-        this.drawGradientRect(posX, posY, posX + sizeX, posY + titlebar_height, 0xFF000000 | tb_top, 0xFF000000 | tb_bottom);
-
-        // text renders under overlay :(
-        this.drawCenteredString(this.fontRendererObj, "It works! Well kinda...", posX + (sizeX / 2), posY + (sizeY / 2), 0xFFFF0000);
+        for (GuiElementWindow w : windowList) {
+            w.drawBackground(mouseX, mouseY, renderPartialTicks);
+            w.drawForeground(mouseX, mouseY, renderPartialTicks);
+        }
 
         if (this.mc.thePlayer != null && this.mc.thePlayer.openContainer != null) {
             GL11.glEnable(GL11.GL_LIGHTING);
@@ -95,18 +123,49 @@ public class GuiStudioMain extends GuiStudio {
         GL11.glPopMatrix();
     }
 
+//    protected void drawBackground(int mouseX, int mouseY, float renderPartialTicks) {
+//        int border = 0x222222;
+//        this.drawGradientRect(posX - 1, posY - 1, posX + sizeX + 1, posY + sizeY + 1, 0xFF000000 | border, 0xFF000000 | border);
+//        int main_window_top = 0xEEFFEE;
+//        int main_window_bottom = 0xFFEEEE;
+//        this.drawGradientRect(posX, posY, posX + sizeX, posY + sizeY, 0xFF000000 | main_window_top, 0xFF000000 | main_window_bottom);
+//
+//        // titlebar
+//        int tb_top = 0xFFDDDD;
+//        int tb_bottom = 0xDDFFDD;
+//        this.drawGradientRect(posX, posY, posX + sizeX, posY + titlebar_height, 0xFF000000 | tb_top, 0xFF000000 | tb_bottom);
+//    }
+
+    protected void drawCenteredStringNoShadow(FontRenderer fr, String s, int x, int y, int c, boolean v) {
+        fr.drawString(s, x - fr.getStringWidth(s) / 2, v ? y - (fontRendererObj.FONT_HEIGHT / 2) : y, c);
+    }
+
+    protected void drawCenteredString(FontRenderer fr, String s, int x, int y, int c, boolean v) {
+        fr.drawStringWithShadow(s, x - fr.getStringWidth(s) / 2, v ? y - (fontRendererObj.FONT_HEIGHT / 2) : y, c);
+    }
+
+//    protected void drawForeground(int mouseX, int mouseY, float renderPartialTicks) {
+//        // title
+//        drawCenteredStringNoShadow(fontRendererObj, "NBX Studio", posX + (sizeX / 2), posY + 10, 0xFF000000, true);
+//        drawCenteredStringNoShadow(fontRendererObj, "It works! Well kinda...", posX + (sizeX / 2), posY + (sizeY / 2), 0xFF800080, true);
+//    }
+
     @Override
     protected void keyTyped(char character, int keycode) {
         if (background != null && keycode == 1) {
-            mc.currentScreen = background;
-            handler.skipPostInitCheck = handlerOldSkip;
-            mc.displayGuiScreen(background);
+            exit();
         } else {
             super.keyTyped(character, keycode);
         }
         if (mc.currentScreen == this) {
             handler.skipPostInitCheck = true;
         }
+    }
+
+    @Override
+    public void initGui() {
+//        closeButton = new GuiButton(0, posX + sizeX - 20, posY, 20, 20, "x");
+//        buttonList.add(closeButton);
     }
 
     @Override
@@ -164,6 +223,9 @@ public class GuiStudioMain extends GuiStudio {
     @Override
     public void onGuiClosed() {
         handler.skipPostInitCheck = handlerOldSkip;
+        for (GuiElementWindow w : windowList) {
+            w.onGuiClosed();
+        }
     }
 
 }
