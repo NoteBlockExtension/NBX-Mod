@@ -4,6 +4,7 @@ import com.github.soniex2.nbx.mod.handler.StudioHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 
 /**
  * @author soniex2
@@ -66,12 +67,27 @@ public class GuiStudioMain extends GuiStudio {
         }
         // end hack
 
+        // render ON TOP
+        float oldzlevel = this.zLevel;
+        this.zLevel = 1000.0F;
+        if (this.mc.thePlayer.openContainer != null) {
+            GL11.glPushMatrix();
+            GL11.glDisable(GL11.GL_LIGHTING);
+        }
+
         super.drawScreen(mouseX, mouseY, renderPartialTicks);
 
         int c1 = 0xEEFFEE;
         int c2 = 0xFFEEEE;
         this.drawGradientRect(posX, posY, posX + sizeX, posY + sizeY, 0xFF000000 | c1, 0xFF000000 | c2);
         this.drawGradientRect(posX, posY, posX + sizeX, posY + titlebar_height, 0xFF000000 | c2, 0xFF000000 | c1);
+
+        if (this.mc.thePlayer.openContainer != null) {
+            GL11.glEnable(GL11.GL_LIGHTING);
+            GL11.glPopMatrix();
+        }
+        // restore zLevel
+        this.zLevel = oldzlevel;
     }
 
     @Override
