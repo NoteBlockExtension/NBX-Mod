@@ -1,4 +1,4 @@
-package com.github.soniex2.nbx.mod.proxy;
+package com.github.enbyex.nbx.mod.proxy;
 
 /**
  * @author soniex2

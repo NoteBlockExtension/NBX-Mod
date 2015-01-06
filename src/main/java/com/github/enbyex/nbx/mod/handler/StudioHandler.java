@@ -1,6 +1,6 @@
-package com.github.soniex2.nbx.mod.handler;
+package com.github.enbyex.nbx.mod.handler;
 
-import com.github.soniex2.nbx.mod.gui.GuiStudioMain;
+import com.github.enbyex.nbx.mod.gui.GuiStudioMain;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

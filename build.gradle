@@ -18,7 +18,7 @@ buildscript {
 apply plugin: 'forge'
 
 version = "1.0"
-group = "com.github.soniex2.nbx.mod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = "com.github.enbyex.nbx.mod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "NBX-Mod"
 
 sourceCompatibility = 1.7

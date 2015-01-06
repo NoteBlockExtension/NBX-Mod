@@ -1,4 +1,4 @@
-package com.github.soniex2.nbx.mod.gui;
+package com.github.enbyex.nbx.mod.gui;
 
 import net.minecraft.client.gui.GuiScreen;
 

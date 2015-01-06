@@ -1,6 +1,6 @@
-package com.github.soniex2.nbx.mod;
+package com.github.enbyex.nbx.mod;
 
-import com.github.soniex2.nbx.mod.proxy.CommonProxy;
+import com.github.enbyex.nbx.mod.proxy.CommonProxy;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -16,7 +16,7 @@ public class NBXMod {
     public static final String MODNAME = "NBXMod";
     public static final String MODID = "nbxmod";
     public static final String VERSION = "1.0";
-    public static final String PKGBASE = "com.github.soniex2.nbx.mod";
+    public static final String PKGBASE = "com.github.enbyex.nbx.mod";
     public static final String PROXYBASE = PKGBASE + ".proxy";
 
     @Mod.Instance

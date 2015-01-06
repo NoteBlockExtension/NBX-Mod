@@ -1,6 +1,6 @@
-package com.github.soniex2.nbx.mod.gui;
+package com.github.enbyex.nbx.mod.gui;
 
-import com.github.soniex2.nbx.mod.handler.StudioHandler;
+import com.github.enbyex.nbx.mod.handler.StudioHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;

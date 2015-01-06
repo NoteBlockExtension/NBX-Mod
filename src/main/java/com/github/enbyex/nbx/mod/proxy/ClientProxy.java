@@ -1,6 +1,6 @@
-package com.github.soniex2.nbx.mod.proxy;
+package com.github.enbyex.nbx.mod.proxy;
 
-import com.github.soniex2.nbx.mod.handler.StudioHandler;
+import com.github.enbyex.nbx.mod.handler.StudioHandler;
 import net.minecraftforge.common.MinecraftForge;
 
 /**
