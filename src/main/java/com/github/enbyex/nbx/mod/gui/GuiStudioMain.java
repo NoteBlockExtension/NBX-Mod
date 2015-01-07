@@ -95,13 +95,13 @@ public class GuiStudioMain extends GuiStudio {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float renderPartialTicks) {
-        // HACK!
+        /* HACK! \u002A\u002F
         if (background != null) {
             mc.currentScreen = background;
             background.drawScreen(0, 0, renderPartialTicks);
             mc.currentScreen = this;
         }
-        // end hack
+        \u002F\u002A end hack */
 
         GL11.glPushMatrix();
         if (this.mc.thePlayer != null && this.mc.thePlayer.openContainer != null) {
@@ -173,26 +173,26 @@ public class GuiStudioMain extends GuiStudio {
 
     @Override
     public void setWorldAndResolution(Minecraft mc, int xres, int yres) {
-        // HACK!
+        /* HACK! \u002A\u002F
         if (background != null) {
             mc.currentScreen = background;
             background.setWorldAndResolution(mc, xres, yres);
             mc.currentScreen = this;
         }
-        // end hack
+        \u002F\u002A end hack */
 
         super.setWorldAndResolution(mc, xres, yres);
     }
 
     @Override
     public void updateScreen() {
-        // HACK!
+        /* HACK! \u002A\u002F
         if (background != null) {
             mc.currentScreen = background;
             background.updateScreen();
             mc.currentScreen = this;
         }
-        // end hack
+        \u002F\u002A end hack */
 
         super.updateScreen();
     }
@@ -200,25 +200,25 @@ public class GuiStudioMain extends GuiStudio {
     @Override
     public void drawWorldBackground(int p_146270_1_) {
         // we don't draw a background
-        // HACK!
+        /* HACK! \u002A\u002F
         if (background != null) {
             mc.currentScreen = background;
             background.drawWorldBackground(p_146270_1_);
             mc.currentScreen = this;
         }
-        // end hack
+        \u002F\u002A end hack */
     }
 
     @Override
     public boolean doesGuiPauseGame() {
         boolean b = false;
-        // HACK!
+        /* HACK! \u002A\u002F
         if (background != null) {
             mc.currentScreen = background;
             b = background.doesGuiPauseGame();
             mc.currentScreen = this;
         }
-        // end hack
+        \u002F\u002A end hack */
 
         return b;
     }
