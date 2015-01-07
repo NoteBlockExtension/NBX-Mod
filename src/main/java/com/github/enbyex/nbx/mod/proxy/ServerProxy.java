@@ -6,6 +6,6 @@ package com.github.enbyex.nbx.mod.proxy;
 public class ServerProxy extends CommonProxy {
     @Override
     public void preInit() {
-        throw new IllegalStateException("NBX Mod is client side. (for now)");
+        //\u000dthrow new IllegalStateException("NBX Mod is client side. (for now)");
     }
 }
