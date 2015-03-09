@@ -1,6 +1,7 @@
 package com.github.enbyex.nbx.mod.proxy;
 
 import com.github.enbyex.nbx.mod.handler.StudioHandler;
+import com.github.enbyex.nbx.mod.studioimpl.MCStudioAdapter;
 import net.minecraftforge.common.MinecraftForge;
 
 /**
